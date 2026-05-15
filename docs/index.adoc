@@ -1,3 +1,5 @@
+image::images/header.png[Hat, width=100%]
+
 = NotebookLM в освіті та професійній діяльності
 
 ifdef::env-name[:relfilesuffix: .adoc]
