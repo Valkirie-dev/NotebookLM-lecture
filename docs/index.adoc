@@ -4,8 +4,8 @@ image::images/header.png[Hat, width=100%]
 
 ifdef::env-name[:relfilesuffix: .adoc]
 
-* xref:NotebookLM_for_Academia.pdf[NotebookLM Презентація]
-* xref:теорія-NotebookLM.html[NotebookLM Теорія]
-* xref:NotebookLM-практикум.html[NotebookLM Практика]
+* xref:NotebookLM_for_Academia.pdf[NotebookLM Презентація^]
+* xref:теорія-NotebookLM.html[NotebookLM Теорія^]
+* xref:NotebookLM-практикум.html[NotebookLM Практика^]
 
 image::images/footer.png[Under, width=100%]
