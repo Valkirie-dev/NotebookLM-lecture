@@ -82,7 +82,7 @@
         
         <div class="flex items-center gap-4 bg-gray-50 px-5 py-2.5 rounded-full border border-gray-200">
             <span class="text-sm font-medium text-gray-600">Ваш бал:</span>
-            <span id="score-text" class="font-bold text-brand-dark text-lg px-2 py-0.5 rounded bg-yellow-100 border border-yellow-300">0 / 10</span>
+            <span id="score-text" class="font-bold text-brand-dark text-lg px-2 py-0.5 rounded bg-yellow-100 border border-yellow-300">0 / 40</span>
         </div>
     </header>
 
@@ -103,7 +103,7 @@
                     <li>Оберіть одну з 4-х сфер (Освіта, Бізнес, Військова справа, Творчість).</li>
                     <li>Отримайте специфічне завдання для NotebookLM.</li>
                     <li>Виконайте його в інструменті та вставте результат сюди.</li>
-                    <li><strong>Максимальна оцінка — 10 балів.</strong> Ви можете зупинитися після одного завдання, або пройти всі сценарії для практики!</li>
+                    <li><strong>Максимальна оцінка — 40 балів (по 10 за кожну роль).</strong> Ви можете зупинитися після одного завдання, або пройти всі сценарії для практики!</li>
                 </ul>
             </div>
             <button onclick="showScreen('screen-roles')" class="bg-brand-dark text-white font-bold text-lg px-12 py-4 rounded-full hover:bg-brand-blue transition-all shadow-xl hover:-translate-y-1">
@@ -246,13 +246,13 @@
             </div>
         </div>
 
-        <!-- Screen 4: Final Success (Shown after 1st success, but allows continuing) -->
+        <!-- Screen 4: Final Success -->
         <div id="screen-final" class="screen flex-col items-center justify-center text-center max-w-3xl w-full">
             <div class="text-[100px] mb-6 animate-bounce">🏆</div>
             <h2 class="text-4xl md:text-5xl font-bold text-brand-dark mb-4 tracking-tight">Чудова робота!</h2>
             <p class="text-xl text-gray-600 mb-8 leading-relaxed">
                 Ви успішно використали NotebookLM для вирішення професійного завдання.<br>
-                Ваш результат: <strong class="text-brand-success text-2xl" id="final-score">10 / 10</strong> балів.
+                Ваш результат: <strong class="text-brand-success text-2xl" id="final-score">10 / 40</strong> балів.
             </p>
             
             <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm w-full mb-8">
@@ -264,7 +264,7 @@
                 </ul>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-4">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <button onclick="location.reload()" class="px-8 py-3 bg-gray-200 text-gray-800 font-bold rounded-xl hover:bg-gray-300 transition-all">
                     Завершити практикум
                 </button>
@@ -366,10 +366,20 @@
             
             // Reset input and feedback when leaving task screen
             if (screenId !== 'screen-task') {
-                document.getElementById('task-input').value = '';
+                const taskInput = document.getElementById('task-input');
+                const verifyBtn = document.getElementById('verify-btn');
+                
+                taskInput.value = '';
+                taskInput.disabled = false;
+                
                 document.getElementById('feedback-area').classList.add('hidden');
-                document.getElementById('verify-btn').disabled = false;
-                document.getElementById('verify-btn').classList.remove('opacity-50', 'cursor-not-allowed');
+                
+                verifyBtn.disabled = false;
+                verifyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                verifyBtn.innerHTML = `
+                    <span>Перевірити виконання</span>
+                    <span id="spinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                `;
             }
         }
 
@@ -430,19 +440,26 @@
                 if (result.ok) {
                     if (!completedRoles.has(currentRole.id)) {
                         completedRoles.add(currentRole.id);
-                        // Add points only if not already 10 (max 10 as per rules, but we can allow more if desired. 
-                        // Prompt said: "максимум 10 балів за одне завдання". Let's cap at 10 for UI simplicity, 
-                        // or add +10 for each. Let's cap at 10 as requested: "максимум 10 балів, але при бажанні може пройти по всіх".
-                        globalScore = 10; 
-                        document.getElementById('score-text').innerText = `${globalScore} / 10`;
-                        document.getElementById('score-text').classList.replace('bg-yellow-100', 'bg-green-100');
-                        document.getElementById('score-text').classList.replace('border-yellow-300', 'border-green-300');
+                        
+                        // Calculate score based on total completed tasks (10 points each)
+                        globalScore = completedRoles.size * 10; 
+                        
+                        const scoreText = document.getElementById('score-text');
+                        scoreText.innerText = `${globalScore} / 40`;
+                        
+                        if (globalScore > 0) {
+                            scoreText.classList.replace('bg-yellow-100', 'bg-green-100');
+                            scoreText.classList.replace('border-yellow-300', 'border-green-300');
+                        }
                     }
 
                     // Disable textarea
                     document.getElementById('task-input').disabled = true;
                     btn.classList.add('opacity-50', 'cursor-not-allowed');
                     btn.innerText = "Виконано ✅";
+                    
+                    // Update final screen text
+                    document.getElementById('final-score').innerText = `${globalScore} / 40`;
 
                     // Trigger success animation and go to final screen after reading feedback
                     triggerConfetti();
