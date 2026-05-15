@@ -6,7 +6,7 @@ image::images/header.png[Hat, width=100%]
 
 ifdef::env-name[:relfilesuffix: .adoc]
 
-* xref:NotebookLM_for_Academia.pdf[NotebookLM Презентація, window="_blank"]
+* xref:NotebookLM_Knowledge_Prism.pdf[NotebookLM Презентація, window="_blank"]
 * xref:теорія-NotebookLM.html[NotebookLM Теорія, window="_blank"]
 * xref:NotebookLM-практикум.html[NotebookLM Практика, window="_blank"]
 
