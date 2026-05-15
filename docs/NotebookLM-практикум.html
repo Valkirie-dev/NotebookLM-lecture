@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotebookLM Практикум | Робота з АІ інструментом</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#00A6EB',
+                            red: '#E60036',
+                            lightBlue: '#81D0F4',
+                            darkBlue: '#2A668E',
+                            dark: '#302A40',
+                            success: '#10b981'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .internal-scroll::-webkit-scrollbar { width: 6px; }
+        .internal-scroll::-webkit-scrollbar-track { background: transparent; }
+        .internal-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+
+        #sections-wrapper {
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            will-change: transform;
+        }
+
+        .section-container {
+            height: calc(100vh - 5rem);
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        .content-box {
+            width: 100%; max-width: 1200px;
+            height: 100%; max-height: 850px;
+            display: flex; flex-direction: column;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #f1f5f9;
+        }
+
+        .nav-control {
+            position: fixed; right: 2rem; bottom: 3rem;
+            display: flex; flex-direction: column; gap: 1rem; z-index: 100;
+        }
+
+        .arrow-btn {
+            width: 3.5rem; height: 3.5rem;
+            background: #ffffff; border: 2px solid #e2e8f0;
+            color: #302A40; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: all 0.2s;
+        }
+
+        .arrow-btn:hover:not(:disabled) { border-color: #00A6EB; color: #00A6EB; transform: scale(1.1); }
+        .arrow-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Фінальний екран прихований */
+        #final-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner {
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            width: 16px; height: 16px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="text-brand-dark">
+
+    <header class="fixed top-0 left-0 w-full h-20 bg-white/90 backdrop-blur-md border-b border-gray-200 z-50 flex items-center justify-between px-6 md:px-12">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-brand-blue rounded-xl flex items-center justify-center text-white font-bold text-xl">N</div>
+            <div>
+                <h1 class="font-bold text-lg leading-tight">NotebookLM: когнітивний партнер</h1>
+                <p class="text-xs text-gray-500 uppercase tracking-widest">Професійний практикум</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-4 bg-gray-50 px-5 py-2.5 rounded-full border border-gray-200">
+            <span class="text-sm font-medium text-gray-600 hidden md:block">Прогрес:</span>
+            <div class="bg-gray-200 rounded-full h-2 w-24 md:w-40 overflow-hidden">
+                <div id="progress-bar" class="bg-brand-red h-full w-0 transition-all duration-500"></div>
+            </div>
+            <span id="score-text" class="font-bold text-brand-red text-sm">0 / 3</span>
+        </div>
+    </header>
+
+    <div class="nav-control">
+        <button id="btnUp" class="arrow-btn" onclick="navigate(-1)" aria-label="Вгору">▲</button>
+        <button id="btnDown" class="arrow-btn" onclick="navigate(1)" aria-label="Вниз">▼</button>
+    </div>
+
+    <div class="w-full h-screen pt-20 relative">
+        <div id="sections-wrapper" class="w-full h-full">
+            
+            <section class="section-container">
+                <div class="content-box justify-center items-center text-center p-8 bg-gradient-to-br from-white to-blue-50">
+                    <div class="w-24 h-24 bg-white rounded-full shadow-lg flex items-center justify-center text-5xl mb-6 border border-gray-100">📽️</div>
+                    <h2 class="text-4xl md:text-5xl font-bold text-brand-dark mb-6 tracking-tight">Набуття навичок<br>роботи з <span class="text-brand-blue">NotebookLM</span></h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mb-10 leading-relaxed">
+                        Вивчіть можливості інструменту: від виокремлення даних з великих нормативних документів до генерації та експорту готових слайдів у форматі PDF.
+                    </p>
+                    <button onclick="navigate(1)" class="bg-brand-dark text-white font-bold text-lg px-12 py-4 rounded-full hover:bg-brand-blue transition-all shadow-xl hover:-translate-y-1 transform">
+                        Почати навчання
+                    </button>
+                </div>
+            </section>
+
+            <section class="section-container">
+                <div class="content-box">
+                    <div class="bg-brand-blue text-white px-8 py-5 flex items-center justify-between flex-shrink-0">
+                        <h3 class="font-bold text-xl flex items-center gap-3"><span>1️⃣</span> Аналіз веб-джерела</h3>
+                        <span id="badge1" class="hidden bg-white text-brand-success text-xs font-bold px-3 py-1 rounded-full uppercase">Виконано</span>
+                    </div>
+                    <div class="flex-grow grid lg:grid-cols-2 overflow-hidden">
+                        <div class="p-8 border-r border-gray-100 flex flex-col justify-center bg-gray-50/50">
+                            <h4 class="text-xs font-bold text-gray-400 uppercase mb-4 tracking-widest">Крок 1: Джерело та Промпт</h4>
+                            <p class="text-sm mb-4">Використайте статтю про ШІ для створення хронологічної таблиці:</p>
+                            <div class="bg-white p-4 rounded-xl border border-gray-200 text-xs text-brand-blue font-mono mb-4 break-all" id="source1">https://uk.wikipedia.org/wiki/Штучний_інтелект</div>
+                            <button onclick="copyText('source1')" class="bg-brand-blue/10 text-brand-blue font-bold py-2 rounded-lg text-xs hover:bg-brand-blue/20 transition-colors">КОПІЮВАТИ URL</button>
+                            
+                            <div class="mt-5 bg-brand-blue/5 border border-brand-blue/20 rounded-xl p-4 relative">
+                                <p class="text-[10px] font-bold text-brand-blue uppercase mb-1.5 tracking-wider">Промпт для NotebookLM:</p>
+                                <p class="text-[13px] font-medium text-gray-800 italic pr-8" id="prompt1">"Використовуючи джерело Вікіпедії, створи хронологічну таблицю розвитку ШІ. Включи мінімум 6 ключових подій. Колонки: Рік/Період, Подія, Значення для галузі."</p>
+                                <button onclick="copyText('prompt1')" class="absolute top-4 right-3 bg-white rounded-lg p-2 shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors" title="Копіювати промпт">📋</button>
+                            </div>
+                        </div>
+                        <div class="p-8 flex flex-col bg-white">
+                            <textarea id="input1" class="internal-scroll w-full flex-grow border-2 border-gray-200 rounded-2xl p-5 text-sm focus:border-brand-blue outline-none bg-gray-50 mb-4" placeholder="Вставте Markdown-таблицю з роками розвитку ШІ сюди..."></textarea>
+                            <button onclick="validateTask1()" class="w-full bg-brand-dark text-white font-bold py-4 rounded-xl hover:bg-brand-blue transition-colors">Перевірити результат</button>
+                            <div id="feedback1" class="mt-3 text-xs hidden p-3 rounded-lg border"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-container">
+                <div class="content-box">
+                    <div class="bg-brand-red text-white px-8 py-5 flex items-center justify-between flex-shrink-0">
+                        <h3 class="font-bold text-xl flex items-center gap-3"><span>2️⃣</span> Виокремлення цільових даних</h3>
+                        <span id="badge2" class="hidden bg-white text-brand-success text-xs font-bold px-3 py-1 rounded-full uppercase">Виконано</span>
+                    </div>
+                    <div class="flex-grow grid lg:grid-cols-2 overflow-hidden">
+                        <div class="p-8 border-r border-gray-100 flex flex-col bg-gray-50/50 overflow-hidden">
+                            <h4 class="text-xs font-bold text-gray-400 uppercase mb-3 tracking-widest">Джерело (Освітній стандарт)</h4>
+                            <div class="internal-scroll bg-white border border-gray-200 rounded-xl p-4 text-[11px] text-gray-600 overflow-y-auto mb-3 leading-relaxed shadow-sm" id="source2">
+                                <strong>1. Інтегральна компетентність (ІК):</strong><br>
+                                Здатність розв'язувати складні задачі та проблеми під час навчання або у професійній діяльності.<br><br>
+                                <strong>2. Загальні компетентності (ЗК):</strong><br>
+                                ЗК 1. Аналіз та синтез. ЗК 2. Практичне застосування. ЗК 3. Знання предметної області. ЗК 4. Спілкування державною мовою. ЗК 5. Спілкування іноземною мовою. ЗК 6. Використання ІКТ. ЗК 7. Здатність вчитися. ЗК 8. Пошук інформації. ЗК 9. Командна робота. ЗК 10. Соціальна відповідальність.<br><br>
+                                <strong>3. Фахові компетентності (ФК):</strong><br>
+                                ФК 1. Знання дисципліни. ФК 2. Методи навчання. ФК 3. Оцінювання. ФК 4. Проєктування. ФК 5. Психологічна підготовка. ФК 6. Цифрова грамотність. ФК 7. Інклюзивна компетентність. ФК 8. Педагогічні інновації.<br><br>
+                                <strong>4. Програмні результати навчання (ПРН):</strong><br>
+                                ПРН 1. Формулювання цілей. ПРН 2. Самооцінювання. ПРН 3. Професійний розвиток. ПРН 4. Комунікація. ПРН 5. Управління проєктами. ПРН 6. Використання баз даних. ПРН 7. Етичні норми. ПРН 8. Охорона праці.<br><br>
+                                <strong>5. Додаткові вимоги (ДВ):</strong><br>
+                                ДВ 1. Академічна мобільність. ДВ 2. Адаптивність. ДВ 3. Стресостійкість.
+                            </div>
+                            <button onclick="copyText('source2')" class="bg-brand-red/10 text-brand-red font-bold py-2 rounded-lg text-xs hover:bg-brand-red/20 transition-colors">КОПІЮВАТИ ДОКУМЕНТ</button>
+                            
+                            <div class="mt-5 bg-brand-red/5 border border-brand-red/20 rounded-xl p-4 relative">
+                                <p class="text-[10px] font-bold text-brand-red uppercase mb-1.5 tracking-wider">Промпт для NotebookLM:</p>
+                                <p class="text-[13px] font-medium text-gray-800 italic pr-8" id="prompt2">"Проаналізуй наданий текст стандарту. Витягни з нього ТІЛЬКИ Загальні (ЗК) та Фахові (ФК) компетентності. Створи Markdown-таблицю. Колонки: Код, Назва, Коротке пояснення."</p>
+                                <button onclick="copyText('prompt2')" class="absolute top-4 right-3 bg-white rounded-lg p-2 shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors" title="Копіювати промпт">📋</button>
+                            </div>
+                        </div>
+                        <div class="p-8 flex flex-col bg-white overflow-hidden">
+                            <textarea id="input2" class="internal-scroll w-full flex-grow border-2 border-gray-200 rounded-2xl p-4 text-xs font-mono focus:border-brand-red outline-none bg-gray-50 mb-4" placeholder="| Код | Назва | Пояснення |..."></textarea>
+                            <button onclick="validateTask2()" class="bg-brand-red text-white font-bold py-4 rounded-xl shadow-lg hover:bg-red-700 transition-colors">Перевірити структурування</button>
+                            <div id="feedback2" class="mt-3 text-[11px] hidden p-3 rounded-lg border"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-container">
+                <div class="content-box">
+                    <div class="bg-brand-dark text-white px-8 py-5 flex items-center justify-between flex-shrink-0">
+                        <h3 class="font-bold text-xl flex items-center gap-3"><span>3️⃣</span> Створення презентації</h3>
+                        <span id="badge3" class="hidden bg-brand-success text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Слайди прийнято</span>
+                    </div>
+                    <div class="flex-grow grid lg:grid-cols-2 overflow-hidden">
+                        <div class="p-8 border-r border-gray-100 flex flex-col justify-center bg-gray-50/50">
+                            <h4 class="text-xs font-bold text-gray-400 uppercase mb-4 tracking-widest">Робота в NotebookLM</h4>
+                            <div class="space-y-4 text-xs text-gray-700">
+                                <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                                    <p class="font-bold mb-2">1. Додайте джерело:</p>
+                                    <p id="source3" class="text-brand-blue break-all">https://uk.wikipedia.org/wiki/Змішане_навчання</p>
+                                    <button onclick="copyText('source3')" class="mt-2 text-brand-dark font-bold underline">Копіювати посилання</button>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                                    <p class="font-bold mb-2">2. Згенеруйте презентацію:</p>
+                                    <p>У NotebookLM виберіть створення <strong>Презентації</strong> на основі цього джерела.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                                    <p class="font-bold mb-2">3. Скачайте та завантажте:</p>
+                                    <p>Натисніть <strong>Download</strong> (іконка завантаження), щоб отримати презентацію в PDF, і підвантажте її сюди.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-8 flex flex-col bg-white justify-center">
+                            <div class="border-2 border-dashed border-gray-300 rounded-2xl p-10 flex flex-col items-center justify-center bg-gray-50 hover:bg-brand-blue/5 transition-all cursor-pointer relative shadow-inner" id="upload-zone">
+                                <input type="file" id="pdf-upload" accept="application/pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="handleFileSelect(event)">
+                                <div class="text-6xl mb-4" id="upload-icon">📄</div>
+                                <p class="text-sm font-bold text-center" id="upload-text">Завантажте PDF-презентацію</p>
+                                <p class="text-[10px] text-gray-400 mt-2">Підтримується лише формат .pdf</p>
+                            </div>
+                            <button onclick="validateTask3()" id="btn-task3" class="mt-6 w-full bg-brand-dark text-white font-bold py-4 rounded-xl hover:bg-black transition-all flex justify-center items-center gap-3">
+                                Відправити на перевірку
+                            </button>
+                            <div id="feedback3" class="mt-4 text-[11px] hidden p-3 rounded-xl border"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="final-section" class="section-container">
+                <div class="content-box justify-center items-center text-center p-8 bg-gradient-to-b from-green-50 to-white">
+                    <div class="text-[100px] mb-6 animate-bounce">🏆</div>
+                    <h2 class="text-4xl md:text-5xl font-bold text-green-800 mb-4 tracking-tight">Ви опанували NotebookLM!</h2>
+                    <p class="text-lg text-green-700 max-w-2xl leading-relaxed">
+                        Всі три завдання успішно виконані. Ви навчилися структурувати та виокремлювати складні дані, а також створювати професійні презентації у форматі PDF.
+                    </p>
+                    <button onclick="window.location.reload()" class="mt-8 px-10 py-4 bg-green-800 text-white font-bold rounded-full hover:bg-green-900 shadow-xl transition-all">
+                        Пройти практику ще раз
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        let currentSection = 0;
+        const totalSections = 5; 
+        let isScrolling = false;
+        let scores = { task1: false, task2: false, task3: false };
+
+        function navigate(direction) {
+            let nextSection = currentSection + direction;
+            
+            // Блокування переходу на фінальний екран, якщо не виконано всі завдання
+            if (nextSection === 4 && (!scores.task1 || !scores.task2 || !scores.task3)) {
+                alert("Виконайте всі три завдання, щоб відкрити фінальний екран!");
+                return;
+            }
+
+            if (nextSection >= 0 && nextSection < totalSections) {
+                currentSection = nextSection;
+                updateView();
+            }
+        }
+
+        function updateView() {
+            document.getElementById('sections-wrapper').style.transform = `translateY(-${currentSection * 100}%)`;
+            document.getElementById('btnUp').disabled = (currentSection === 0);
+            
+            const btnDown = document.getElementById('btnDown');
+            // Якщо ми на етапі 3 і завдання ще не здано - кнопка "вниз" заблокована
+            if (currentSection === 3 && (!scores.task1 || !scores.task2 || !scores.task3)) {
+                btnDown.disabled = true;
+                btnDown.style.opacity = "0.2";
+            } else {
+                btnDown.disabled = (currentSection === totalSections - 1);
+                btnDown.style.opacity = "1";
+            }
+        }
+
+        window.addEventListener('wheel', (e) => {
+            if (isScrolling) return;
+            const scrollable = e.target.closest('.internal-scroll, textarea');
+            if (scrollable) {
+                const atTop = scrollable.scrollTop === 0;
+                const atBottom = scrollable.scrollHeight - scrollable.scrollTop <= scrollable.clientHeight + 1;
+                if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) return;
+            }
+            isScrolling = true;
+            navigate(e.deltaY > 0 ? 1 : -1);
+            setTimeout(() => isScrolling = false, 800);
+        }, { passive: false });
+
+        function copyText(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text);
+            
+            const btn = event.target;
+            if (btn.innerText === "📋") {
+                btn.innerText = "✅";
+                setTimeout(() => { btn.innerText = "📋"; }, 2000);
+            } else {
+                const originalText = btn.innerText;
+                btn.innerText = "ГОТОВО ✅";
+                setTimeout(() => { btn.innerText = originalText; }, 2000);
+            }
+        }
+
+        function updateProgress() {
+            const completedCount = Object.values(scores).filter(v => v).length;
+            document.getElementById('score-text').innerText = `${completedCount} / 3`;
+            document.getElementById('progress-bar').style.width = `${(completedCount / 3) * 100}%`;
+
+            // Відкриття фінального екрана в DOM при повному проходженні
+            if (completedCount === 3) {
+                const final = document.getElementById('final-section');
+                final.style.display = 'flex';
+                setTimeout(() => { final.style.opacity = '1'; }, 100);
+            }
+        }
+
+        function showFeedback(id, success, msg) {
+            const fb = document.getElementById(`feedback${id}`);
+            fb.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'bg-green-50', 'text-green-700');
+            fb.classList.add(success ? 'bg-green-50' : 'bg-red-50', success ? 'text-green-700' : 'text-red-700');
+            fb.innerHTML = (success ? '✅ ' : '❌ ') + msg;
+            document.getElementById(`badge${id}`).classList.toggle('hidden', !success);
+            scores[`task${id}`] = success;
+            updateProgress();
+            updateView();
+        }
+
+        function validateTask1() {
+            const val = document.getElementById('input1').value.trim();
+            if (val.includes('|') && val.length > 50) {
+                showFeedback(1, true, "Таблицю хронології ШІ успішно прийнято.");
+            } else {
+                showFeedback(1, false, "Це не схоже на таблицю. Переконайтеся, що ви вставили Markdown-код (мають бути символи |).");
+            }
+        }
+
+        function validateTask2() {
+            const val = document.getElementById('input2').value.trim();
+            const hasZK10 = /ЗК\s*10/.test(val);
+            const hasFK8 = /ФК\s*8/.test(val);
+            const isTable = val.includes('|');
+            
+            // ВИПРАВЛЕНО: Більш точна перевірка на "сміття", щоб не реагувало на "ІКТ" чи інші слова
+            const hasNoise = /Інтегральна|Програмні результати|Додаткові вимоги|ПРН\s*\d|ДВ\s*\d/i.test(val);
+
+            if (!isTable) {
+                return showFeedback(2, false, "Немає формату таблиці (відсутні символи |). Можливо, ви скопіювали просто текст. Вставте код у форматі Markdown.");
+            }
+            if (hasNoise) {
+                return showFeedback(2, false, "У таблицю потрапили зайві дані (Інтегральна, ПРН або ДВ). Завдання: витягти ТІЛЬКИ ЗК та ФК.");
+            }
+            if (!hasZK10 || !hasFK8) {
+                return showFeedback(2, false, "Бракує даних у таблиці. Переконайтеся, що включено всі 10 ЗК та 8 ФК.");
+            }
+            
+            showFeedback(2, true, "Ідеально! Ви успішно відфільтрували потрібні компетентності з великого масиву даних.");
+        }
+
+        function handleFileSelect(e) {
+            const f = e.target.files[0];
+            if (f) {
+                document.getElementById('upload-text').innerText = f.name;
+                document.getElementById('upload-icon').innerText = '📁';
+                document.getElementById('upload-zone').classList.add('border-brand-blue', 'bg-blue-50');
+            }
+        }
+
+        function validateTask3() {
+            const file = document.getElementById('pdf-upload').files[0];
+            const btn = document.getElementById('btn-task3');
+            if (!file) return showFeedback(3, false, "Завантажте PDF-файл презентації.");
+            
+            btn.innerHTML = `<span class="spinner"></span> Перевірка слайдів...`;
+            setTimeout(() => {
+                btn.innerHTML = "Відправити на перевірку";
+                if (file.type === "application/pdf" || file.name.endsWith('.pdf')) {
+                    showFeedback(3, true, "Презентацію прийнято! Ви пройшли практикум.");
+                    setTimeout(() => navigate(1), 1500);
+                } else {
+                    showFeedback(3, false, "Помилка: файл повинен бути у форматі .pdf");
+                }
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

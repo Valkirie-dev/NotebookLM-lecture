@@ -1,0 +1,7 @@
+= Matsering NotebookLM
+
+ifdef::env-name[:relfilesuffix: .adoc]
+
+* xref:NotebookLM_for_Academia.pdf[NotebookLM Lecture]
+* xref:теорія-NotebookLM.html[NotebookLM Theory]
+* xref:NotebookLM-практикум.html[NotebookLM Theory]
