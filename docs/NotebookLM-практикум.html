@@ -123,7 +123,7 @@
                 <button onclick="selectRole('educator')" class="role-card bg-white p-8 rounded-2xl border-2 border-gray-100 text-left flex flex-col h-full cursor-pointer relative overflow-hidden group">
                     <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">🎓</div>
                     <h3 class="text-xl font-bold text-brand-dark mb-2">Освітянин</h3>
-                    <p class="text-sm text-gray-500 flex-grow">Викладач, науковець або студент. Аналіз статей, створення планів занять та структурування знань.</p>
+                    <p class="text-sm text-gray-500 flex-grow">Викладач, науковець або студент. Створення перевірочних матеріалів, тестів та Q&A на основі текстів.</p>
                     <div class="mt-6 text-brand-blue font-semibold text-sm flex items-center gap-2">
                         Обрати <span class="group-hover:translate-x-1 transition-transform">→</span>
                     </div>
@@ -133,7 +133,7 @@
                 <button onclick="selectRole('entrepreneur')" class="role-card bg-white p-8 rounded-2xl border-2 border-gray-100 text-left flex flex-col h-full cursor-pointer relative overflow-hidden group">
                     <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">💼</div>
                     <h3 class="text-xl font-bold text-brand-dark mb-2">Підприємець</h3>
-                    <p class="text-sm text-gray-500 flex-grow">Власник бізнесу, менеджер, маркетолог. Аналіз конкурентів, бізнес-моделей та структурування стратегій.</p>
+                    <p class="text-sm text-gray-500 flex-grow">Власник бізнесу, менеджер, маркетолог. Підготовка ділових пропозицій та написання email-ів на основі фактів.</p>
                     <div class="mt-6 text-brand-blue font-semibold text-sm flex items-center gap-2">
                         Обрати <span class="group-hover:translate-x-1 transition-transform">→</span>
                     </div>
@@ -143,7 +143,7 @@
                 <button onclick="selectRole('military')" class="role-card bg-white p-8 rounded-2xl border-2 border-gray-100 text-left flex flex-col h-full cursor-pointer relative overflow-hidden group">
                     <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">🛡️</div>
                     <h3 class="text-xl font-bold text-brand-dark mb-2">Військовий</h3>
-                    <p class="text-sm text-gray-500 flex-grow">Офіцер, інструктор, аналітик. Опрацювання протоколів, стандартизація звітів та виокремлення тактичних даних.</p>
+                    <p class="text-sm text-gray-500 flex-grow">Офіцер, інструктор, аналітик. Витяг історичної хронології, структурування подій та дат.</p>
                     <div class="mt-6 text-brand-blue font-semibold text-sm flex items-center gap-2">
                         Обрати <span class="group-hover:translate-x-1 transition-transform">→</span>
                     </div>
@@ -153,7 +153,7 @@
                 <button onclick="selectRole('creative')" class="role-card bg-white p-8 rounded-2xl border-2 border-gray-100 text-left flex flex-col h-full cursor-pointer relative overflow-hidden group">
                     <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">🎨</div>
                     <h3 class="text-xl font-bold text-brand-dark mb-2">Креатор</h3>
-                    <p class="text-sm text-gray-500 flex-grow">Письменник, дизайнер, сценарист. Брейнштормінг, розробка лору, структурування персонажів та ідей.</p>
+                    <p class="text-sm text-gray-500 flex-grow">Письменник, дизайнер, сценарист. Формування лор-глосарію, форматування термінів та понять.</p>
                     <div class="mt-6 text-brand-blue font-semibold text-sm flex items-center gap-2">
                         Обрати <span class="group-hover:translate-x-1 transition-transform">→</span>
                     </div>
@@ -214,7 +214,7 @@
                             <p class="text-sm font-semibold text-gray-700 mb-2">Відправте цей промпт у чат NotebookLM:</p>
                             <div class="relative bg-brand-dark text-white p-4 rounded-xl shadow-inner">
                                 <p id="task-prompt" class="text-sm italic pr-10 font-light leading-relaxed">
-                                    "Проаналізуй текст про 'Перевернуте навчання'. Створи Markdown-таблицю. Колонки мають називатися рівно так: 'Етап', 'Діяльність викладача', 'Діяльність студента'. Опиши мінімум 3 етапи."
+                                    "Проаналізуй текст про 'Перевернуте навчання'. Створи Markdown-таблицю..."
                                 </p>
                                 <button onclick="copyToClipboard('task-prompt', this)" class="absolute right-3 top-3 p-2 bg-white/20 hover:bg-white/30 rounded text-sm transition-colors backdrop-blur-sm" title="Копіювати">📋</button>
                             </div>
@@ -233,7 +233,7 @@
                     </div>
                     
                     <div class="p-6 flex-grow flex flex-col">
-                        <textarea id="task-input" class="internal-scroll w-full flex-grow min-h-[250px] border-2 border-gray-200 rounded-xl p-4 text-sm font-mono focus:border-brand-blue outline-none bg-gray-50 mb-4 resize-none transition-colors" placeholder="| Етап | Діяльність викладача | Діяльність студента |\n|---|---|---|\n| ... | ... | ... |"></textarea>
+                        <textarea id="task-input" class="internal-scroll w-full flex-grow min-h-[250px] border-2 border-gray-200 rounded-xl p-4 text-sm font-mono focus:border-brand-blue outline-none bg-gray-50 mb-4 resize-none transition-colors" placeholder="Вставте відповідь від ШІ..."></textarea>
                         
                         <div id="feedback-area" class="hidden mb-4 p-4 rounded-xl text-sm border"></div>
                         
@@ -259,8 +259,8 @@
                 <h3 class="font-bold text-lg mb-2">Що ви щойно зробили:</h3>
                 <ul class="text-left text-gray-600 space-y-2 text-sm max-w-lg mx-auto list-disc list-inside">
                     <li>Завантажили специфічний контекст у ШІ-зошит.</li>
-                    <li>Використали точний промпт для структурування даних.</li>
-                    <li>Отримали готовий до використання артефакт (Markdown таблицю).</li>
+                    <li>Використали точний промпт для досягнення цілі.</li>
+                    <li>Отримали готовий до використання артефакт.</li>
                 </ul>
             </div>
 
@@ -286,71 +286,78 @@
                 id: 'educator',
                 icon: '🎓',
                 title: 'Сценарій: Освітянин',
-                subtitle: 'Аналіз підходів до навчання',
+                subtitle: 'Створення перевірочних матеріалів',
                 source: 'https://allright.com/en/blog/teacher_blog_ua/shho-take-flipped-classroom-abo-metod-perevernutogo-uroku',
-                prompt: 'Проаналізуй текст про "Перевернуте навчання". Створи Markdown-таблицю. Колонки мають називатися точно так: "Етап", "Діяльність викладача", "Діяльність студента". Опиши мінімум 3 етапи: до заняття, під час, після.',
+                prompt: 'На основі тексту про "Перевернуте навчання", створи 3 контрольні запитання для перевірки знань студентів та надай розгорнуті відповіді на них. Використовуй чіткий формат: "Питання 1: [текст]" та "Відповідь 1: [текст]".',
+                placeholder: 'Питання 1: Яка головна ідея...\nВідповідь 1: Головна ідея полягає в тому...\n\nПитання 2: ...',
                 validate: function(text) {
-                    const lower = text.toLowerCase();
-                    const hasTable = text.includes('|') && text.includes('---');
-                    const hasCols = lower.includes('етап') && lower.includes('викладач') && lower.includes('студент');
+                    if (text.length < 50) return { ok: false, msg: 'Текст занадто короткий. Схоже, ви не скопіювали повну відповідь від NotebookLM.' };
                     
-                    if (!hasTable) return { ok: false, msg: 'Не знайдено формату Markdown-таблиці (відсутні символи | та ---). Переконайтеся, що ви скопіювали таблицю.' };
-                    if (!hasCols) return { ok: false, msg: 'Таблиця є, але немає правильних назв колонок ("Етап", "Діяльність викладача", "Діяльність студента").' };
-                    return { ok: true, msg: 'Ідеально! Ви успішно структурували педагогічний матеріал.' };
+                    const lower = text.toLowerCase();
+                    const hasQuestions = lower.includes('питання') || lower.includes('запитання');
+                    const hasAnswers = lower.includes('відповідь');
+                    
+                    if (!hasQuestions || !hasAnswers) return { ok: false, msg: 'Не знайдено формату "Питання / Відповідь". Переконайтеся, що ви скопіювали згенерований тест.' };
+                    return { ok: true, msg: 'Ідеально! Ви успішно перетворили статтю на готовий навчальний матеріал.' };
                 }
             },
             entrepreneur: {
                 id: 'entrepreneur',
                 icon: '💼',
                 title: 'Сценарій: Підприємець',
-                subtitle: 'Стратегічний бізнес-аналіз',
+                subtitle: 'Підготовка ділової пропозиції',
                 source: 'https://uk.wikipedia.org/wiki/SWOT-аналіз',
-                prompt: 'На основі джерела створи шаблон для проведення SWOT-аналізу будь-якого підприємства у форматі Markdown-таблиці. Колонки: "Елемент SWOT" (Сильні сторони, Слабкі сторони і т.д.), "Опис", "Приклад для ІТ-компанії".',
+                prompt: 'Уяви, що ти переконуєш команду впровадити SWOT-аналіз. Напиши короткий email (до 100 слів), використовуючи факти з джерела. Обов\'язково включи рядки "Тема:", "Командо," та закінчи лист закликом до дії.',
+                placeholder: 'Тема: Впровадження SWOT-аналізу\n\nКомандо,\n\nПропоную почати використовувати...\n\nДавайте обговоримо це на наступній зустрічі!',
                 validate: function(text) {
-                    const lower = text.toLowerCase();
-                    const hasTable = text.includes('|') && text.includes('---');
-                    const hasCols = lower.includes('елемент') && lower.includes('опис') && lower.includes('приклад');
-                    const hasSwot = lower.includes('сильні') || lower.includes('слабкі');
+                    if (text.length < 50) return { ok: false, msg: 'Текст занадто короткий. Скопіюйте повний згенерований лист.' };
                     
-                    if (!hasTable) return { ok: false, msg: 'Результат має бути у вигляді Markdown-таблиці.' };
-                    if (!hasCols || !hasSwot) return { ok: false, msg: 'Таблиця не містить потрібних колонок або елементів SWOT-аналізу. Перевірте промпт.' };
-                    return { ok: true, msg: 'Чудово! Тепер у вас є готовий шаблон для аналізу бізнесу.' };
+                    const lower = text.toLowerCase();
+                    const hasSubject = lower.includes('тема:');
+                    const hasGreeting = lower.includes('команд');
+                    
+                    if (!hasSubject) return { ok: false, msg: 'У тексті відсутня "Тема:". ШІ мав згенерувати формат email-листа.' };
+                    if (!hasGreeting) return { ok: false, msg: 'Не знайдено звернення до команди. Спробуйте ще раз.' };
+                    return { ok: true, msg: 'Чудово! NotebookLM згенерував переконливий лист на основі аналітичної статті.' };
                 }
             },
             military: {
                 id: 'military',
                 icon: '🛡️',
                 title: 'Сценарій: Військовий',
-                subtitle: 'Структурування міжнародних стандартів',
+                subtitle: 'Витяг історичної хронології',
                 source: 'https://uk.wikipedia.org/wiki/НАТО',
-                prompt: 'Проаналізуй статтю про НАТО. Витягни інформацію про хвилі розширення альянсу після Холодної війни (з 1999 року) та оформи у Markdown-таблицю. Колонки: "Рік вступу", "Країни, що приєдналися", "Стратегічне значення (коротко)".',
+                prompt: 'Проаналізуй статтю про НАТО. Витягни ключові події створення та перших років альянсу (з 1949 по 1955 рік) і створи хронологічний нумерований список. Кожен пункт має починатися з року (наприклад, "1. 1949: ...").',
+                placeholder: '1. 1949: Підписання Північноатлантичного договору...\n2. 1952: Приєднання Греції та Туреччини...\n3. 1955: Вступ Західної Німеччини...',
                 validate: function(text) {
-                    const lower = text.toLowerCase();
-                    const hasTable = text.includes('|') && text.includes('---');
-                    const hasCols = lower.includes('рік') && lower.includes('країн') && lower.includes('значення');
-                    const hasYears = text.includes('1999') || text.includes('2004');
+                    if (text.length < 50) return { ok: false, msg: 'Текст занадто короткий. Переконайтеся, що ви скопіювали всю хронологію.' };
                     
-                    if (!hasTable) return { ok: false, msg: 'Немає розмітки таблиці. NotebookLM повинен згенерувати таблицю з символами |.' };
-                    if (!hasCols) return { ok: false, msg: 'Відсутні необхідні колонки у таблиці.' };
-                    if (!hasYears) return { ok: false, msg: 'Не знайдено даних про розширення після 1999 року. Можливо, ШІ не витягнув потрібні роки.' };
-                    return { ok: true, msg: 'Так точно! Дані структуровано чітко за стандартами.' };
+                    const has1949 = text.includes('1949');
+                    const has1955 = text.includes('1955');
+                    const hasNumbers = text.includes('1.') || text.includes('1)');
+                    
+                    if (!hasNumbers) return { ok: false, msg: 'Очікується нумерований список (1., 2. тощо).' };
+                    if (!has1949 || !has1955) return { ok: false, msg: 'Не знайдено ключових дат (1949 або 1955). Можливо, ШІ не витягнув потрібний період.' };
+                    return { ok: true, msg: 'Так точно! Хронологію успішно видобуто з великого масиву тексту.' };
                 }
             },
             creative: {
                 id: 'creative',
                 icon: '🎨',
                 title: 'Сценарій: Креатор',
-                subtitle: 'Розробка ігрового лору / сюжету',
+                subtitle: 'Формування лор-глосарію',
                 source: 'https://uk.wikipedia.org/wiki/Кіберпанк',
-                prompt: 'Використовуючи статтю про Кіберпанк як джерело натхнення, згенеруй 4 архетипи персонажів для нової історії. Оформи у Markdown-таблицю. Колонки: "Назва архетипу", "Характерна риса", "Класична зброя/імплант", "Роль у сюжеті".',
+                prompt: 'Використовуючи статтю про Кіберпанк, виділи 4 ключові елементи цього жанру (наприклад, мегакорпорації, кіберпростір) та створи глосарій. Формат: виділи сам термін **жирним шрифтом** (за допомогою **), а далі напиши його визначення через тире.',
+                placeholder: '**Мегакорпорації** — величезні компанії, що мають більше влади...\n\n**Кіберпростір** — глобальна комп\'ютерна мережа...',
                 validate: function(text) {
-                    const lower = text.toLowerCase();
-                    const hasTable = text.includes('|') && text.includes('---');
-                    const hasCols = lower.includes('архетип') && lower.includes('рис') && lower.includes('роль');
+                    if (text.length < 50) return { ok: false, msg: 'Текст занадто короткий. Скопіюйте весь глосарій.' };
                     
-                    if (!hasTable) return { ok: false, msg: 'Очікується Markdown-таблиця (використовуйте | для розділення колонок).' };
-                    if (!hasCols) return { ok: false, msg: 'Неправильні назви колонок. Переконайтеся, що ШІ виконав умову промпту.' };
-                    return { ok: true, msg: 'Блискуче! Ідеально структурований матеріал для початку роботи над сюжетом.' };
+                    const hasBold = text.includes('**');
+                    const hasDash = text.includes('-') || text.includes('—') || text.includes('–');
+                    
+                    if (!hasBold) return { ok: false, msg: 'Не знайдено Markdown-розмітки жирного шрифту (**). Переконайтеся, що терміни виділені.' };
+                    if (!hasDash) return { ok: false, msg: 'Не знайдено тире, що розділяє термін та його опис.' };
+                    return { ok: true, msg: 'Блискуче! Ви створили основу для словника вашого нового всесвіту.' };
                 }
             }
         };
@@ -392,6 +399,9 @@
             document.getElementById('task-subtitle').innerText = currentRole.subtitle;
             document.getElementById('source-url').innerText = currentRole.source;
             document.getElementById('task-prompt').innerText = currentRole.prompt;
+            
+            // Set dynamic placeholder
+            document.getElementById('task-input').placeholder = currentRole.placeholder || "Вставте відповідь від NotebookLM сюди...";
             
             showScreen('screen-task');
         }
